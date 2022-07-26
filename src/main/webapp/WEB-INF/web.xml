@@ -21,6 +21,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>StartPage</servlet-name>
+        <jsp-file>/index.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>ByeByeWeb</servlet-name>
         <jsp-file>/WEB-INF/jsp/bye.jsp</jsp-file>
     </servlet>
@@ -35,6 +40,11 @@
     <servlet-mapping>
         <servlet-name>ByeByeWeb</servlet-name>
         <url-pattern>/bye</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>StartPage</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
 </web-app>
