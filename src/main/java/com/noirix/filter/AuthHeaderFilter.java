@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -27,6 +28,13 @@ public class AuthHeaderFilter implements Filter {
         System.out.println("In Auth filter!");
 
         HttpServletRequest castedRequest = (HttpServletRequest) request;
+
+
+        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+        for (Cookie cookie : cookies) {
+            System.out.println(cookie.getSecure());
+        }
+
         //String authHeader = castedRequest.getHeader("X-Auth-Token");
         String authHeader = castedRequest.getHeader("Secret-Key");
         if (StringUtils.isNotBlank(authHeader)) { //for future JWT Token Auth

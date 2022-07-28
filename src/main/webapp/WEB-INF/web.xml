@@ -64,7 +64,12 @@
 
     <filter-mapping>
         <filter-name>CharsetFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/bye/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>CharsetFilter</filter-name>
+        <url-pattern>/qwe/*</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -76,6 +81,10 @@
         <filter-name>HeaderFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
 
 </web-app>
 
