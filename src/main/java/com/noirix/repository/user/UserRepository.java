@@ -1,11 +1,13 @@
 package com.noirix.repository.user;
 
 import com.noirix.domain.User;
+import com.noirix.exception.NoSuchEntityException;
 import com.noirix.util.DatabasePropertiesReader;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,18 +35,7 @@ public class UserRepository implements UserRepositoryInterface {
 
     @Override
     public User findById(Long id) {
-        return null;
-    }
-
-    @Override
-    public Optional<User> findOne(Long id) {
-        return Optional.empty();
-    }
-
-    public List<User> findAll() {
-        final String findAllQuery = "select * from carshop.users order by id limit 10";
-
-        List<User> result = new ArrayList<>();
+        final String findByIdQuery = "select * from carshop.users where id = " + id;
 
         Connection connection;
         Statement statement;
@@ -53,17 +44,26 @@ public class UserRepository implements UserRepositoryInterface {
         try {
             connection = getConnection();
             statement = connection.createStatement();
-            rs = statement.executeQuery(findAllQuery);
-
-            while (rs.next()) {
-                result.add(userRowMapping(rs));
+            rs = statement.executeQuery(findByIdQuery);
+            boolean hasRow = rs.next();
+            if (hasRow) {
+                return userRowMapping(rs);
+            } else {
+                throw new NoSuchEntityException("Entity User with id " + id + " does not exist", 404);
             }
-
-            return result;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new RuntimeException("SQL Issues!");
         }
+    }
+
+    @Override
+    public Optional<User> findOne(Long id) {
+        return Optional.of(findById(id));
+    }
+
+    public List<User> findAll() {
+        return findAll(DEFAULT_FIND_ALL_LIMIT, DEFAULT_FIND_ALL_OFFSET);
     }
 
     private Connection getConnection() throws SQLException {
@@ -103,12 +103,66 @@ public class UserRepository implements UserRepositoryInterface {
 
     @Override
     public List<User> findAll(int limit, int offset) {
-        return null;
+        final String findAllQuery = "select * from carshop.users order by id limit " + limit + " offset " + offset;
+
+        List<User> result = new ArrayList<>();
+
+        Connection connection;
+        Statement statement;
+        ResultSet rs;
+
+        try {
+            connection = getConnection();
+            statement = connection.createStatement();
+            rs = statement.executeQuery(findAllQuery);
+
+            while (rs.next()) {
+                result.add(userRowMapping(rs));
+            }
+
+            return result;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("SQL Issues!");
+        }
     }
 
     @Override
     public User create(User object) {
-        return null;
+        final String insertQuery =
+                "insert into carshop.users (user_name, surname, birth, is_deleted, creation_date, modification_date, weight) " +
+                " values (?, ?, ?, ?, ?, ?, ?);";
+
+        Connection connection;
+        PreparedStatement statement;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(insertQuery);
+
+            statement.setString(1, object.getUserName());
+            statement.setString(2, object.getSurname());
+            statement.setTimestamp(3, object.getBirth());
+            statement.setBoolean(4, object.isDeleted());
+            statement.setTimestamp(5, object.getCreationDate());
+            statement.setTimestamp(6, object.getModificationDate());
+            statement.setDouble(7, object.getWeight());
+
+            //executeUpdate - for INSERT, UPDATE, DELETE
+            statement.executeUpdate();
+            //For select
+            //statement.executeQuery();
+
+            /*Get users last insert id for finding new object in DB*/
+            ResultSet resultSet = connection.prepareStatement("SELECT currval('carshop.users_id_seq') as last_id").executeQuery();
+            resultSet.next();
+            long userLastInsertId = resultSet.getLong("last_id");
+
+            return findById(userLastInsertId);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("SQL Issues!");
+        }
     }
 
     @Override
