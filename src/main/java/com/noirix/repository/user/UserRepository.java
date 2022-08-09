@@ -16,20 +16,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.noirix.repository.user.UserTableColumns.BIRTH_DATE;
+import static com.noirix.repository.user.UserTableColumns.CHANGED;
+import static com.noirix.repository.user.UserTableColumns.CREATED;
 import static com.noirix.repository.user.UserTableColumns.ID;
 import static com.noirix.repository.user.UserTableColumns.NAME;
 import static com.noirix.repository.user.UserTableColumns.SURNAME;
-import static com.noirix.repository.user.UserTableColumns.BIRTH_DATE;
-import static com.noirix.repository.user.UserTableColumns.CREATED;
-import static com.noirix.repository.user.UserTableColumns.CHANGED;
 import static com.noirix.repository.user.UserTableColumns.WEIGHT;
-
-import static com.noirix.util.DatabasePropertiesReader.POSTRGES_DRIVER_NAME;
-import static com.noirix.util.DatabasePropertiesReader.DATABASE_URL;
-import static com.noirix.util.DatabasePropertiesReader.DATABASE_PORT;
-import static com.noirix.util.DatabasePropertiesReader.DATABASE_NAME;
 import static com.noirix.util.DatabasePropertiesReader.DATABASE_LOGIN;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_NAME;
 import static com.noirix.util.DatabasePropertiesReader.DATABASE_PASSWORD;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_PORT;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_URL;
+import static com.noirix.util.DatabasePropertiesReader.POSTRGES_DRIVER_NAME;
 
 public class UserRepository implements UserRepositoryInterface {
 
@@ -131,7 +130,7 @@ public class UserRepository implements UserRepositoryInterface {
     public User create(User object) {
         final String insertQuery =
                 "insert into carshop.users (user_name, surname, birth, is_deleted, creation_date, modification_date, weight) " +
-                " values (?, ?, ?, ?, ?, ?, ?);";
+                        " values (?, ?, ?, ?, ?, ?, ?);";
 
         Connection connection;
         PreparedStatement statement;
@@ -167,12 +166,56 @@ public class UserRepository implements UserRepositoryInterface {
 
     @Override
     public User update(User object) {
-        return null;
+        final String updateQuery =
+                "update carshop.users " +
+                        "set " +
+                        "user_name = ?, surname = ?, birth = ?, is_deleted = ?, creation_date = ?, modification_date = ?, weight = ? " +
+                        " where id = ?";
+
+        Connection connection;
+        PreparedStatement statement;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(updateQuery);
+
+            statement.setString(1, object.getUserName());
+            statement.setString(2, object.getSurname());
+            statement.setTimestamp(3, object.getBirth());
+            statement.setBoolean(4, object.isDeleted());
+            statement.setTimestamp(5, object.getCreationDate());
+            statement.setTimestamp(6, object.getModificationDate());
+            statement.setDouble(7, object.getWeight());
+            statement.setLong(8, object.getId());
+
+            statement.executeUpdate();
+
+            return findById(object.getId());
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("SQL Issues!");
+        }
     }
 
     @Override
     public Long delete(Long id) {
-        return null;
+        final String deleteQuery =
+                "delete from carshop.users where id = ?";
+
+        Connection connection;
+        PreparedStatement statement;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(deleteQuery);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+
+            return id;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("SQL Issues!");
+        }
     }
 
     @Override

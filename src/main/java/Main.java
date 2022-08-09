@@ -32,5 +32,15 @@ public class Main {
         User user1 = userRepository.create(user);
         System.out.println(user1);
 
+        user.setId(user1.getId());
+        user.setUserName("Update Prepared");
+        user.setModificationDate(new Timestamp(new Date().getTime()));
+        user.setWeight(100D);
+        User user2 = userRepository.update(user);
+
+        System.out.println(user2);
+
+        userRepository.delete(458L);
+
     }
 }
