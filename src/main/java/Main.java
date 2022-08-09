@@ -1,5 +1,5 @@
 import com.noirix.domain.User;
-import com.noirix.repository.UserRepository;
+import com.noirix.repository.user.UserRepository;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
-package com.noirix.repository;
+package com.noirix.repository.user;
 
 import com.noirix.domain.User;
+import com.noirix.repository.CRUDRepository;
 
 import java.util.Map;
 

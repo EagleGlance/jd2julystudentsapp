@@ -1,4 +1,4 @@
-package com.noirix.repository;
+package com.noirix.repository.user;
 
 import com.noirix.domain.User;
 import com.noirix.util.DatabasePropertiesReader;
@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.noirix.repository.UserTableColumns.ID;
-import static com.noirix.repository.UserTableColumns.NAME;
-import static com.noirix.repository.UserTableColumns.SURNAME;
-import static com.noirix.repository.UserTableColumns.BIRTH_DATE;
-import static com.noirix.repository.UserTableColumns.CREATED;
-import static com.noirix.repository.UserTableColumns.CHANGED;
-import static com.noirix.repository.UserTableColumns.WEIGHT;
+import static com.noirix.repository.user.UserTableColumns.ID;
+import static com.noirix.repository.user.UserTableColumns.NAME;
+import static com.noirix.repository.user.UserTableColumns.SURNAME;
+import static com.noirix.repository.user.UserTableColumns.BIRTH_DATE;
+import static com.noirix.repository.user.UserTableColumns.CREATED;
+import static com.noirix.repository.user.UserTableColumns.CHANGED;
+import static com.noirix.repository.user.UserTableColumns.WEIGHT;
 
 import static com.noirix.util.DatabasePropertiesReader.POSTRGES_DRIVER_NAME;
 import static com.noirix.util.DatabasePropertiesReader.DATABASE_URL;
@@ -51,6 +51,23 @@ public class UserRepository implements UserRepositoryInterface {
         ResultSet rs;
 
         try {
+            connection = getConnection();
+            statement = connection.createStatement();
+            rs = statement.executeQuery(findAllQuery);
+
+            while (rs.next()) {
+                result.add(userRowMapping(rs));
+            }
+
+            return result;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("SQL Issues!");
+        }
+    }
+
+    private Connection getConnection() throws SQLException {
+        try {
             String driver = DatabasePropertiesReader.getProperty(POSTRGES_DRIVER_NAME);
 
             Class.forName(driver);
@@ -67,29 +84,21 @@ public class UserRepository implements UserRepositoryInterface {
 
         String jdbcURL = StringUtils.join(url, port, dbName);
 
-        try {
-            connection = DriverManager.getConnection(jdbcURL, login, password);
-            statement = connection.createStatement();
-            rs = statement.executeQuery(findAllQuery);
+        return DriverManager.getConnection(jdbcURL, login, password);
+    }
 
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getLong(ID));
-                user.setUserName(rs.getString(NAME));
-                user.setSurname(rs.getString(SURNAME));
-                user.setBirth(rs.getTimestamp(BIRTH_DATE));
-                user.setCreationDate(rs.getTimestamp(CREATED));
-                user.setModificationDate(rs.getTimestamp(CHANGED));
-                user.setWeight(rs.getDouble(WEIGHT));
+    private User userRowMapping(ResultSet rs) throws SQLException {
+        User user = new User();
 
-                result.add(user);
-            }
+        user.setId(rs.getLong(ID));
+        user.setUserName(rs.getString(NAME));
+        user.setSurname(rs.getString(SURNAME));
+        user.setBirth(rs.getTimestamp(BIRTH_DATE));
+        user.setCreationDate(rs.getTimestamp(CREATED));
+        user.setModificationDate(rs.getTimestamp(CHANGED));
+        user.setWeight(rs.getDouble(WEIGHT));
 
-            return result;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new RuntimeException("SQL Issues!");
-        }
+        return user;
     }
 
     @Override

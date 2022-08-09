@@ -1,4 +1,4 @@
-package com.noirix.repository;
+package com.noirix.repository.user;
 
 public interface UserTableColumns {
 
