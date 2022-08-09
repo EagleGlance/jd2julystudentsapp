@@ -1,6 +1,7 @@
 package com.noirix.repository;
 
 import com.noirix.domain.User;
+import com.noirix.util.DatabasePropertiesReader;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
@@ -10,24 +11,35 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-public class UserRepository {
+import static com.noirix.repository.UserTableColumns.ID;
+import static com.noirix.repository.UserTableColumns.NAME;
+import static com.noirix.repository.UserTableColumns.SURNAME;
+import static com.noirix.repository.UserTableColumns.BIRTH_DATE;
+import static com.noirix.repository.UserTableColumns.CREATED;
+import static com.noirix.repository.UserTableColumns.CHANGED;
+import static com.noirix.repository.UserTableColumns.WEIGHT;
 
-    public static final String POSTRGES_DRIVER_NAME = "org.postgresql.Driver";
-    public static final String DATABASE_URL = "jdbc:postgresql://localhost:";
-    public static final int DATABASE_PORT = 5432;
-    public static final String DATABASE_NAME = "/jd2";
-    public static final String DATABASE_LOGIN = "postgres";
-    public static final String DATABASE_PASSWORD = "root";
-    //public static final String DATABASE_PASSWORD = "postgres";
+import static com.noirix.util.DatabasePropertiesReader.POSTRGES_DRIVER_NAME;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_URL;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_PORT;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_NAME;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_LOGIN;
+import static com.noirix.util.DatabasePropertiesReader.DATABASE_PASSWORD;
 
-    private static final String ID = "id";
-    private static final String NAME = "user_name";
-    private static final String SURNAME = "surname";
-    private static final String BIRTH_DATE = "birth";
-    private static final String CREATED = "creation_date";
-    private static final String CHANGED = "modification_date";
-    private static final String WEIGHT = "weight";
+public class UserRepository implements UserRepositoryInterface {
+
+    @Override
+    public User findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public Optional<User> findOne(Long id) {
+        return Optional.empty();
+    }
 
     public List<User> findAll() {
         final String findAllQuery = "select * from carshop.users order by id limit 10";
@@ -39,16 +51,24 @@ public class UserRepository {
         ResultSet rs;
 
         try {
-            Class.forName(POSTRGES_DRIVER_NAME);
+            String driver = DatabasePropertiesReader.getProperty(POSTRGES_DRIVER_NAME);
+
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC Driver Cannot be loaded!");
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
         }
 
-        String jdbcURL = StringUtils.join(DATABASE_URL, DATABASE_PORT, DATABASE_NAME);
+        String url = DatabasePropertiesReader.getProperty(DATABASE_URL);
+        String port = DatabasePropertiesReader.getProperty(DATABASE_PORT);
+        String dbName = DatabasePropertiesReader.getProperty(DATABASE_NAME);
+        String login = DatabasePropertiesReader.getProperty(DATABASE_LOGIN);
+        String password = DatabasePropertiesReader.getProperty(DATABASE_PASSWORD);
+
+        String jdbcURL = StringUtils.join(url, port, dbName);
 
         try {
-            connection = DriverManager.getConnection(jdbcURL, DATABASE_LOGIN, DATABASE_PASSWORD);
+            connection = DriverManager.getConnection(jdbcURL, login, password);
             statement = connection.createStatement();
             rs = statement.executeQuery(findAllQuery);
 
@@ -72,4 +92,28 @@ public class UserRepository {
         }
     }
 
+    @Override
+    public List<User> findAll(int limit, int offset) {
+        return null;
+    }
+
+    @Override
+    public User create(User object) {
+        return null;
+    }
+
+    @Override
+    public User update(User object) {
+        return null;
+    }
+
+    @Override
+    public Long delete(Long id) {
+        return null;
+    }
+
+    @Override
+    public Map<String, String> getUserStats() {
+        return null;
+    }
 }
