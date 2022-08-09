@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -219,7 +220,26 @@ public class UserRepository implements UserRepositoryInterface {
     }
 
     @Override
-    public Map<String, String> getUserStats() {
-        return null;
+    public Map<String, Object> getUserStats() {
+        final String callFunction =
+                "select carshop.get_users_stats_average_weight(?)";
+
+        Connection connection;
+        PreparedStatement statement;
+
+        try {
+            connection = getConnection();
+            statement = connection.prepareStatement(callFunction);
+            statement.setBoolean(1, true);
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+            double functiionCall = resultSet.getDouble(1);
+
+            return Collections.singletonMap("avg", functiionCall);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("SQL Issues!");
+        }
     }
 }

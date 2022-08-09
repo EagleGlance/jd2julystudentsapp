@@ -4,6 +4,7 @@ import com.noirix.repository.user.UserRepository;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -42,5 +43,11 @@ public class Main {
 
         userRepository.delete(458L);
 
+        Map<String, Object> userStats =
+                userRepository.getUserStats();
+
+        for (Map.Entry<String, Object> stringObjectEntry : userStats.entrySet()) {
+            System.out.println(stringObjectEntry.getValue());
+        }
     }
 }

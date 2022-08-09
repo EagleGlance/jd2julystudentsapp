@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface UserRepositoryInterface extends CRUDRepository<Long, User> {
 
-    Map<String, String> getUserStats();
+    Map<String, Object> getUserStats();
 
 }
