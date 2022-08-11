@@ -1,6 +1,8 @@
 package com.noirix.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @EqualsAndHashCode
+@Builder
 //@ToString(exclude = {"userName"})
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +28,7 @@ public class User {
 
     private Timestamp birth;
 
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     private Timestamp creationDate;
 

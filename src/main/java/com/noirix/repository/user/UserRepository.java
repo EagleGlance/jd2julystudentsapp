@@ -21,6 +21,7 @@ import static com.noirix.repository.user.UserTableColumns.BIRTH_DATE;
 import static com.noirix.repository.user.UserTableColumns.CHANGED;
 import static com.noirix.repository.user.UserTableColumns.CREATED;
 import static com.noirix.repository.user.UserTableColumns.ID;
+import static com.noirix.repository.user.UserTableColumns.IS_DELETED;
 import static com.noirix.repository.user.UserTableColumns.NAME;
 import static com.noirix.repository.user.UserTableColumns.SURNAME;
 import static com.noirix.repository.user.UserTableColumns.WEIGHT;
@@ -97,8 +98,19 @@ public class UserRepository implements UserRepositoryInterface {
         user.setCreationDate(rs.getTimestamp(CREATED));
         user.setModificationDate(rs.getTimestamp(CHANGED));
         user.setWeight(rs.getDouble(WEIGHT));
+        user.setIsDeleted(rs.getBoolean(IS_DELETED));
 
         return user;
+
+/*        return User.builder()
+                .id(rs.getLong(ID))
+                .userName(rs.getString(NAME))
+                .surname(rs.getString(SURNAME))
+                .birth(rs.getTimestamp(BIRTH_DATE))
+                .creationDate(rs.getTimestamp(CREATED))
+                .modificationDate(rs.getTimestamp(CHANGED))
+                .weight(rs.getDouble(WEIGHT))
+                .build();*/
     }
 
     @Override
@@ -143,7 +155,7 @@ public class UserRepository implements UserRepositoryInterface {
             statement.setString(1, object.getUserName());
             statement.setString(2, object.getSurname());
             statement.setTimestamp(3, object.getBirth());
-            statement.setBoolean(4, object.isDeleted());
+            statement.setBoolean(4, object.getIsDeleted());
             statement.setTimestamp(5, object.getCreationDate());
             statement.setTimestamp(6, object.getModificationDate());
             statement.setDouble(7, object.getWeight());
@@ -183,7 +195,7 @@ public class UserRepository implements UserRepositoryInterface {
             statement.setString(1, object.getUserName());
             statement.setString(2, object.getSurname());
             statement.setTimestamp(3, object.getBirth());
-            statement.setBoolean(4, object.isDeleted());
+            statement.setBoolean(4, object.getIsDeleted());
             statement.setTimestamp(5, object.getCreationDate());
             statement.setTimestamp(6, object.getModificationDate());
             statement.setDouble(7, object.getWeight());

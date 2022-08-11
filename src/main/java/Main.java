@@ -26,7 +26,7 @@ public class Main {
         user.setBirth(new Timestamp(new Date().getTime()));
         user.setCreationDate(new Timestamp(new Date().getTime()));
         user.setModificationDate(new Timestamp(new Date().getTime()));
-        user.setDeleted(false);
+        user.setIsDeleted(false);
         user.setWeight(87D);
         System.out.println(user);
 

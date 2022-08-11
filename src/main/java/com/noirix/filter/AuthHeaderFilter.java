@@ -26,22 +26,21 @@ public class AuthHeaderFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         System.out.println("In Auth filter!");
-
-        HttpServletRequest castedRequest = (HttpServletRequest) request;
-
-
-        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
-        for (Cookie cookie : cookies) {
-            System.out.println(cookie.getSecure());
-        }
-
-        //String authHeader = castedRequest.getHeader("X-Auth-Token");
-        String authHeader = castedRequest.getHeader("Secret-Key");
-        if (StringUtils.isNotBlank(authHeader)) { //for future JWT Token Auth
-            System.out.println("Header was found with payload: " + authHeader);
-        } else {
-            System.out.println("Header was not found!");
-        }
+//
+//        HttpServletRequest castedRequest = (HttpServletRequest) request;
+//
+//        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+//        for (Cookie cookie : cookies) {
+//            System.out.println(cookie.getSecure());
+//        }
+//
+//        //String authHeader = castedRequest.getHeader("X-Auth-Token");
+//        String authHeader = castedRequest.getHeader("Secret-Key");
+//        if (StringUtils.isNotBlank(authHeader)) { //for future JWT Token Auth
+//            System.out.println("Header was found with payload: " + authHeader);
+//        } else {
+//            System.out.println("Header was not found!");
+//        }
 
         chain.doFilter(request, response);
     }

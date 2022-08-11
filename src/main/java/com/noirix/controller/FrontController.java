@@ -1,6 +1,8 @@
 package com.noirix.controller;
 
 
+import com.noirix.repository.user.UserRepository;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,9 +27,16 @@ public class FrontController extends HttpServlet {
     }
 
     private void doRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/bye");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/hello");
         if (dispatcher != null) {
             System.out.println("Forward will be done!");
+
+            req.setAttribute("user", "Slava");
+
+            UserRepository userRepository = new UserRepository();
+
+            req.setAttribute("users", userRepository.findAll());
+
             dispatcher.forward(req, resp);
         }
     }

@@ -16,4 +16,6 @@ public interface UserTableColumns {
 
     String WEIGHT = "weight";
 
+    String IS_DELETED = "is_deleted";
+
 }
