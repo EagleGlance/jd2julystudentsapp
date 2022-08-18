@@ -5,7 +5,6 @@ import com.noirix.exception.NoSuchEntityException;
 import com.noirix.util.DatabasePropertiesReader;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
