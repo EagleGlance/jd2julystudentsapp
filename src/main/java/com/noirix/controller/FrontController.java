@@ -2,6 +2,7 @@ package com.noirix.controller;
 
 
 import com.noirix.repository.user.UserRepository;
+import com.noirix.util.DatabaseProperties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,7 +34,7 @@ public class FrontController extends HttpServlet {
 
             req.setAttribute("user", "Slava");
 
-            UserRepository userRepository = new UserRepository();
+            UserRepository userRepository = new UserRepository(new DatabaseProperties());
 
             req.setAttribute("users", userRepository.findAll());
 

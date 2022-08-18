@@ -2,7 +2,9 @@ package com.noirix.repository.user;
 
 import com.noirix.domain.User;
 import com.noirix.exception.NoSuchEntityException;
-import com.noirix.util.DatabasePropertiesReader;
+import com.noirix.util.DatabaseProperties;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -27,16 +29,13 @@ import static com.noirix.repository.user.UserTableColumns.IS_DELETED;
 import static com.noirix.repository.user.UserTableColumns.NAME;
 import static com.noirix.repository.user.UserTableColumns.SURNAME;
 import static com.noirix.repository.user.UserTableColumns.WEIGHT;
-import static com.noirix.util.DatabasePropertiesReader.DATABASE_LOGIN;
-import static com.noirix.util.DatabasePropertiesReader.DATABASE_NAME;
-import static com.noirix.util.DatabasePropertiesReader.DATABASE_PASSWORD;
-import static com.noirix.util.DatabasePropertiesReader.DATABASE_PORT;
-import static com.noirix.util.DatabasePropertiesReader.DATABASE_URL;
-import static com.noirix.util.DatabasePropertiesReader.POSTRGES_DRIVER_NAME;
 
 @Repository
 @Primary
+@RequiredArgsConstructor
 public class UserRepository implements UserRepositoryInterface {
+
+    private final DatabaseProperties databaseProperties;
 
     @Override
     public User findById(Long id) {
@@ -73,7 +72,7 @@ public class UserRepository implements UserRepositoryInterface {
 
     private Connection getConnection() throws SQLException {
         try {
-            String driver = DatabasePropertiesReader.getProperty(POSTRGES_DRIVER_NAME);
+            String driver = databaseProperties.getDriverName();
 
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
@@ -81,11 +80,11 @@ public class UserRepository implements UserRepositoryInterface {
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
         }
 
-        String url = DatabasePropertiesReader.getProperty(DATABASE_URL);
-        String port = DatabasePropertiesReader.getProperty(DATABASE_PORT);
-        String dbName = DatabasePropertiesReader.getProperty(DATABASE_NAME);
-        String login = DatabasePropertiesReader.getProperty(DATABASE_LOGIN);
-        String password = DatabasePropertiesReader.getProperty(DATABASE_PASSWORD);
+        String url = databaseProperties.getUrl();
+        String port = databaseProperties.getPort();
+        String dbName = databaseProperties.getName();
+        String login = databaseProperties.getLogin();
+        String password = databaseProperties.getPassword();
 
         String jdbcURL = StringUtils.join(url, port, dbName);
 
