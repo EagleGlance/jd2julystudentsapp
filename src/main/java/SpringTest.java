@@ -4,7 +4,10 @@ import com.noirix.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class SpringTest {
     public static void main(String[] args) {
@@ -28,9 +31,28 @@ public class SpringTest {
         UserService userService = annotationConfigApplicationContext.getBean(UserService.class);
 
         List<User> all = userService.findAll();
+        Map<String, Object> userStats = userService.getUserStats();
 
         for (User user : all) {
             System.out.println(user);
         }
+
+
+        for (Map.Entry<String, Object> stringObjectEntry : userStats.entrySet()) {
+            System.out.println(stringObjectEntry.getKey() + " : " + stringObjectEntry.getValue());
+        }
+
+        User user = new User();
+        user.setUserName("JDBC");
+        user.setSurname("Template");
+        user.setBirth(new Timestamp(new Date().getTime()));
+        user.setCreationDate(new Timestamp(new Date().getTime()));
+        user.setModificationDate(new Timestamp(new Date().getTime()));
+        user.setIsDeleted(false);
+        user.setWeight(87D);
+        System.out.println(user);
+
+        User user1 = userService.create(user);
+        System.out.println(user1);
     }
 }

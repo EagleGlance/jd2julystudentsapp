@@ -5,10 +5,11 @@ import com.noirix.repository.user.UserRepositoryInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,27 +27,48 @@ public class JdbcTemplateUserRepository implements UserRepositoryInterface {
 
     @Override
     public User findById(Long id) {
-        return null;
+        return jdbcTemplate.queryForObject("select * from carshop.users where id = " + id, userRowMapper);
     }
 
     @Override
     public Optional<User> findOne(Long id) {
-        return Optional.empty();
+        return Optional.of(findById(id));
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from carshop.users", userRowMapper);
+        return findAll(DEFAULT_FIND_ALL_LIMIT, DEFAULT_FIND_ALL_OFFSET);
     }
 
     @Override
     public List<User> findAll(int limit, int offset) {
-        return null;
+        return jdbcTemplate.query("select * from carshop.users limit " + limit + " offset " + offset, userRowMapper);
     }
 
     @Override
     public User create(User object) {
-        return null;
+        final String insertQuery =
+                "insert into carshop.users (user_name, surname, birth, is_deleted, creation_date, modification_date, weight) " +
+                        " values (:userName, :surname, :birth, :isDeleted, :creationDate, :modificationDate, :weight);";
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("userName", object.getUserName());
+        mapSqlParameterSource.addValue("surname", object.getSurname());
+        mapSqlParameterSource.addValue("birth", object.getBirth());
+        mapSqlParameterSource.addValue("isDeleted", object.getIsDeleted());
+        mapSqlParameterSource.addValue("creationDate", object.getCreationDate());
+        mapSqlParameterSource.addValue("modificationDate", object.getModificationDate());
+        mapSqlParameterSource.addValue("weight", object.getWeight());
+
+        namedParameterJdbcTemplate.update(insertQuery, mapSqlParameterSource);
+
+        Long lastInsertId = namedParameterJdbcTemplate.query("SELECT currval('carshop.users_id_seq') as last_id",
+                resultSet -> {
+                    resultSet.next();
+                    return resultSet.getLong("last_id");
+                });
+
+        return findById(lastInsertId);
     }
 
     @Override
@@ -56,11 +78,16 @@ public class JdbcTemplateUserRepository implements UserRepositoryInterface {
 
     @Override
     public Long delete(Long id) {
-        return null;
+        jdbcTemplate.update("delete from carshop.users where id = " + id);
+        return id;
     }
 
     @Override
     public Map<String, Object> getUserStats() {
-        return null;
+        return jdbcTemplate.query("select carshop.get_users_stats_average_weight(true)", resultSet -> {
+
+            resultSet.next();
+            return Collections.singletonMap("avg", resultSet.getDouble(1));
+        });
     }
 }

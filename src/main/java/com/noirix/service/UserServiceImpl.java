@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,16 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll() {
 
         return userRepository.findAll();
+    }
+
+    @Override
+    public Map<String, Object> getUserStats() {
+        return userRepository.getUserStats();
+    }
+
+    @Override
+    public User create(User object) {
+        return userRepository.create(object);
     }
 
 //    @Autowired
