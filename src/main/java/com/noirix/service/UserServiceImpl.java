@@ -22,18 +22,12 @@ public class UserServiceImpl implements UserService {
 //JSR-330
     private final UserRepositoryInterface userRepository;
 
-    private final List<UserRepositoryInterface> interfaces;
-
 //    public UserServiceImpl(@Qualifier("userRepository") UserRepositoryInterface userRepository) {
 //        this.userRepository = userRepository;
 //    }
 
     @Override
     public List<User> findAll() {
-
-        for (UserRepositoryInterface anInterface : interfaces) {
-            System.out.println(anInterface);
-        }
 
         return userRepository.findAll();
     }

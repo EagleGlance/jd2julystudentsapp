@@ -31,7 +31,6 @@ import static com.noirix.repository.user.UserTableColumns.SURNAME;
 import static com.noirix.repository.user.UserTableColumns.WEIGHT;
 
 @Repository
-@Primary
 @RequiredArgsConstructor
 public class UserRepository implements UserRepositoryInterface {
 
