@@ -1,6 +1,7 @@
 package com.noirix.repository.jdbctemplate;
 
 import com.noirix.domain.User;
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +20,12 @@ import static com.noirix.repository.user.UserTableColumns.WEIGHT;
 @Component
 public class UserRowMapper implements RowMapper<User> {
 
+    private static final Logger log = Logger.getLogger(UserRowMapper.class);
+
     @Override
     public User mapRow(ResultSet rs, int i) throws SQLException {
+        log.info("User row mapping start");
+
         User user = new User();
 
         user.setId(rs.getLong(ID));
@@ -32,6 +37,7 @@ public class UserRowMapper implements RowMapper<User> {
         user.setWeight(rs.getDouble(WEIGHT));
         user.setIsDeleted(rs.getBoolean(IS_DELETED));
 
+        log.info("User row mapping end");
         return user;
     }
 }
