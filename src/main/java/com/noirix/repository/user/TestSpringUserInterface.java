@@ -1,7 +1,6 @@
 package com.noirix.repository.user;
 
 import com.noirix.domain.User;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class TestSpringUserInterface implements UserRepositoryInterface{
+public class TestSpringUserInterface implements UserRepositoryInterface {
     @Override
     public User findById(Long id) {
         return null;

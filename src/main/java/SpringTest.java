@@ -30,6 +30,8 @@ public class SpringTest {
 
         UserService userService = annotationConfigApplicationContext.getBean(UserService.class);
 
+        userService.findById(898989898L);
+
         List<User> all = userService.findAll();
         Map<String, Object> userStats = userService.getUserStats();
 

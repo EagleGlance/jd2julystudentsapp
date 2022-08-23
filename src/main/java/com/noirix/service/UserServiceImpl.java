@@ -43,7 +43,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.create(object);
     }
 
-//    @Autowired
+    @Override
+    public User findById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    //    @Autowired
 //    //@Inject
 //    public void setUserRepository(@Qualifier("userRepository") UserRepositoryInterface userRepository) {
 //        this.userRepository = userRepository;
