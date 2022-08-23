@@ -2,7 +2,7 @@ package com.noirix.controller;
 
 
 import com.noirix.repository.user.UserRepository;
-import com.noirix.util.DatabaseProperties;
+import com.noirix.configuration.DatabaseProperties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

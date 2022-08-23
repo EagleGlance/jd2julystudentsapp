@@ -2,13 +2,9 @@ package com.noirix.repository.user;
 
 import com.noirix.domain.User;
 import com.noirix.exception.NoSuchEntityException;
-import com.noirix.repository.jdbctemplate.UserRowMapper;
-import com.noirix.util.DatabaseProperties;
-import lombok.AllArgsConstructor;
+import com.noirix.configuration.DatabaseProperties;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;

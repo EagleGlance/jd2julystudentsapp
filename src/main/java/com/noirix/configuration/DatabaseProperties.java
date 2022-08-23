@@ -1,14 +1,15 @@
-package com.noirix.util;
+package com.noirix.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,6 +1,6 @@
 import com.noirix.domain.User;
 import com.noirix.repository.user.UserRepository;
-import com.noirix.util.DatabaseProperties;
+import com.noirix.configuration.DatabaseProperties;
 
 import java.sql.Timestamp;
 import java.util.Date;

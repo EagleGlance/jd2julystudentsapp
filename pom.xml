@@ -23,6 +23,8 @@
         <maven.compiler.target>11</maven.compiler.target>
         <spring.release>5.2.22.RELEASE</spring.release>
         <hikaricp.version>5.0.1</hikaricp.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
+        <log4j.version>1.2.17</log4j.version>
     </properties>
 
 <!--    <packaging>war</packaging>-->
@@ -106,7 +108,27 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.release}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
 
     </dependencies>
