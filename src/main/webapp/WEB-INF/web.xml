@@ -24,40 +24,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!--    localhost:8080/application/FrontController-->
-
-    <servlet>
-        <servlet-name>HelloWeb</servlet-name>
-        <jsp-file>/WEB-INF/jsp/hello.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>StartPage</servlet-name>
-        <jsp-file>/index.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>ByeByeWeb</servlet-name>
-        <jsp-file>/WEB-INF/jsp/bye.jsp</jsp-file>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>HelloWeb</servlet-name>
-        <url-pattern>/hello</url-pattern>
-    </servlet-mapping>
-
-    <!--    localhost:8080/application/hello-->
-
-    <servlet-mapping>
-        <servlet-name>ByeByeWeb</servlet-name>
-        <url-pattern>/bye</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>StartPage</servlet-name>
-        <url-pattern>/start</url-pattern>
-    </servlet-mapping>
-
     <filter>
         <filter-name>CharsetFilter</filter-name>
         <filter-class>com.noirix.filter.CharsetFilter</filter-class>
