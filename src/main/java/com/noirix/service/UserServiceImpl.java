@@ -3,11 +3,8 @@ package com.noirix.service;
 import com.noirix.domain.User;
 import com.noirix.repository.user.UserRepositoryInterface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +43,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long userId) {
         return userRepository.findById(userId);
+    }
+
+    @Override
+    public List<User> search(int limit, int offset) {
+        return userRepository.findAll(limit, offset);
     }
 
     //    @Autowired

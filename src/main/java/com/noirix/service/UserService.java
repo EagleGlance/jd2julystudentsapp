@@ -14,4 +14,6 @@ public interface UserService {
     User create(User object);
 
     User findById(Long userId);
+
+    List<User> search(int limit, int offset);
 }
