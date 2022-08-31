@@ -21,7 +21,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/users")
-public class UserController {
+public class UserMVCController {
 
     private final UserService userService;
 
