@@ -1,6 +1,5 @@
 import com.noirix.domain.User;
 import com.noirix.repository.user.UserRepository;
-import com.noirix.configuration.DatabaseProperties;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -9,7 +8,7 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        UserRepository userRepository = new UserRepository(new DatabaseProperties());
+        UserRepository userRepository = new UserRepository();
 
         List<User> all = userRepository.findAll();
 

@@ -2,7 +2,6 @@ package com.noirix.repository.user;
 
 import com.noirix.domain.User;
 import com.noirix.exception.NoSuchEntityException;
-import com.noirix.configuration.DatabaseProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -35,8 +34,6 @@ import static com.noirix.util.UUIDGenerator.generateUUID;
 public class UserRepository implements UserRepositoryInterface {
 
     private static final Logger log = Logger.getLogger(UserRepository.class);
-
-    private final DatabaseProperties databaseProperties;
 
     @Override
     public User findById(Long id) {
@@ -73,7 +70,7 @@ public class UserRepository implements UserRepositoryInterface {
 
     private Connection getConnection() throws SQLException {
         try {
-            String driver = databaseProperties.getDriverName();
+            String driver = "databaseProperties.getDriverName()";
 
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
@@ -81,9 +78,9 @@ public class UserRepository implements UserRepositoryInterface {
             throw new RuntimeException("JDBC Driver Cannot be loaded!");
         }
 
-        String url = databaseProperties.getUrl();
-        String login = databaseProperties.getLogin();
-        String password = databaseProperties.getPassword();
+        String url = "databaseProperties.getUrl()";
+        String login = "databaseProperties.getLogin()";
+        String password = "databaseProperties.getPassword()";
 
         return DriverManager.getConnection(url, login, password);
     }
