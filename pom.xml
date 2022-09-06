@@ -32,6 +32,7 @@
         <hikaricp.version>5.0.1</hikaricp.version>
         <aspectj.version>1.9.9.1</aspectj.version>
         <log4j.version>1.2.17</log4j.version>
+        <lombok.version.custom>1.18.22</lombok.version.custom>
     </properties>
 
     <dependencies>
@@ -86,6 +87,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version.custom}</version>
         </dependency>
 
         <dependency>
