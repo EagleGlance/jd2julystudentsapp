@@ -14,15 +14,15 @@
     <groupId>com.noirix</groupId>
     <artifactId>jd2studentsdemojuly</artifactId>
     <version>1.0-SNAPSHOT</version>
-<!--    <version>1.0.1</version>-->
-<!--    <version>1.0.20220714205800000</version>-->
-<!--    <version>1.0.003d72c2bb2f</version>-->
+    <!--    <version>1.0.1</version>-->
+    <!--    <version>1.0.20220714205800000</version>-->
+    <!--    <version>1.0.003d72c2bb2f</version>-->
 
-<!--    1.1.2 or 1.0-SNAPSHOT-->
-<!--    1 - major version of artifact-->
-<!--    1 - minor update of artifact-->
-<!--    2 - minor update of minor update artifact-->
-<!--    SNAPSHOT - not for production usage-->
+    <!--    1.1.2 or 1.0-SNAPSHOT-->
+    <!--    1 - major version of artifact-->
+    <!--    1 - minor update of artifact-->
+    <!--    2 - minor update of minor update artifact-->
+    <!--    SNAPSHOT - not for production usage-->
     <packaging>jar</packaging>
 
     <properties>
@@ -33,6 +33,7 @@
         <aspectj.version>1.9.9.1</aspectj.version>
         <log4j.version>1.2.17</log4j.version>
         <lombok.version.custom>1.18.22</lombok.version.custom>
+        <jwt.version>0.11.5</jwt.version>
     </properties>
 
     <dependencies>
@@ -63,13 +64,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
             <scope>compile</scope>
         </dependency>
 
-<!--        Web app dependencies-->
+        <!--        Web app dependencies-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -110,6 +116,24 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${log4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+
+        <!-- API, java.xml.bind module -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+
+        <!-- Runtime, com.sun.xml.bind module -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
         </dependency>
 
     </dependencies>

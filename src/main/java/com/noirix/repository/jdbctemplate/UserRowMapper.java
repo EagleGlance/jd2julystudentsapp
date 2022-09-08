@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.noirix.repository.user.UserTableColumns.BIRTH_DATE;
-import static com.noirix.repository.user.UserTableColumns.CHANGED;
-import static com.noirix.repository.user.UserTableColumns.CREATED;
-import static com.noirix.repository.user.UserTableColumns.ID;
-import static com.noirix.repository.user.UserTableColumns.IS_DELETED;
-import static com.noirix.repository.user.UserTableColumns.NAME;
-import static com.noirix.repository.user.UserTableColumns.SURNAME;
-import static com.noirix.repository.user.UserTableColumns.WEIGHT;
+import static com.noirix.repository.columns.UserTableColumns.BIRTH_DATE;
+import static com.noirix.repository.columns.UserTableColumns.CHANGED;
+import static com.noirix.repository.columns.UserTableColumns.CREATED;
+import static com.noirix.repository.columns.UserTableColumns.ID;
+import static com.noirix.repository.columns.UserTableColumns.IS_DELETED;
+import static com.noirix.repository.columns.UserTableColumns.NAME;
+import static com.noirix.repository.columns.UserTableColumns.SURNAME;
+import static com.noirix.repository.columns.UserTableColumns.WEIGHT;
 
 @Component
 public class UserRowMapper implements RowMapper<User> {

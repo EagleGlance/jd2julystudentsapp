@@ -9,3 +9,9 @@ spring:
     url: "jdbc:postgresql://localhost:5432/jd2"
 server:
   port: 8080
+
+---
+
+jwt:
+  secret: qwepuisdhfaksdjflsdfn12321___**
+  expiration: 60000
