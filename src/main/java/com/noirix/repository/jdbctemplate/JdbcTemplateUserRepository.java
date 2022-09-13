@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -48,8 +49,8 @@ public class JdbcTemplateUserRepository implements UserRepositoryInterface {
     @Override
     public User create(User object) {
         final String insertQuery =
-                "insert into carshop.users (user_name, surname, birth, is_deleted, creation_date, modification_date, weight) " +
-                        " values (:userName, :surname, :birth, :isDeleted, :creationDate, :modificationDate, :weight);";
+                "insert into carshop.users (user_name, surname, birth, is_deleted, creation_date, modification_date, weight, user_login, user_password) " +
+                        " values (:userName, :surname, :birth, :isDeleted, :creationDate, :modificationDate, :weight, :login, :password);";
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("userName", object.getUserName());
@@ -59,6 +60,8 @@ public class JdbcTemplateUserRepository implements UserRepositoryInterface {
         mapSqlParameterSource.addValue("creationDate", object.getCreationDate());
         mapSqlParameterSource.addValue("modificationDate", object.getModificationDate());
         mapSqlParameterSource.addValue("weight", object.getWeight());
+        mapSqlParameterSource.addValue("login", object.getLogin());
+        mapSqlParameterSource.addValue("password", object.getPassword());
 
         namedParameterJdbcTemplate.update(insertQuery, mapSqlParameterSource);
 
@@ -83,11 +86,23 @@ public class JdbcTemplateUserRepository implements UserRepositoryInterface {
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public Map<String, Object> getUserStats() {
         return jdbcTemplate.query("select carshop.get_users_stats_average_weight(true)", resultSet -> {
 
             resultSet.next();
             return Collections.singletonMap("avg", resultSet.getDouble(1));
         });
+    }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+
+        final String searchByLoginQuery = "select * from carshop.users where user_login = :login";
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("login", login);
+
+        return Optional.of(namedParameterJdbcTemplate.queryForObject(searchByLoginQuery, mapSqlParameterSource, userRowMapper));
     }
 }

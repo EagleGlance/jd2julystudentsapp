@@ -13,7 +13,9 @@ import static com.noirix.repository.columns.UserTableColumns.CHANGED;
 import static com.noirix.repository.columns.UserTableColumns.CREATED;
 import static com.noirix.repository.columns.UserTableColumns.ID;
 import static com.noirix.repository.columns.UserTableColumns.IS_DELETED;
+import static com.noirix.repository.columns.UserTableColumns.LOGIN;
 import static com.noirix.repository.columns.UserTableColumns.NAME;
+import static com.noirix.repository.columns.UserTableColumns.PASSWORD;
 import static com.noirix.repository.columns.UserTableColumns.SURNAME;
 import static com.noirix.repository.columns.UserTableColumns.WEIGHT;
 
@@ -36,6 +38,8 @@ public class UserRowMapper implements RowMapper<User> {
         user.setModificationDate(rs.getTimestamp(CHANGED));
         user.setWeight(rs.getDouble(WEIGHT));
         user.setIsDeleted(rs.getBoolean(IS_DELETED));
+        user.setLogin(rs.getString(LOGIN));
+        user.setPassword(rs.getString(PASSWORD));
 
         log.info("User row mapping end");
         return user;

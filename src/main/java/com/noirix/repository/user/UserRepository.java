@@ -251,4 +251,9 @@ public class UserRepository implements UserRepositoryInterface {
             throw new RuntimeException("SQL Issues!");
         }
     }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        return Optional.empty();
+    }
 }

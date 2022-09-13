@@ -18,4 +18,7 @@ public interface UserTableColumns {
 
     String IS_DELETED = "is_deleted";
 
+    String LOGIN = "user_login";
+
+    String PASSWORD = "user_password";
 }
