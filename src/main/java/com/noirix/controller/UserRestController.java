@@ -3,6 +3,7 @@ package com.noirix.controller;
 import com.noirix.controller.requests.UserCreateRequest;
 import com.noirix.controller.requests.UserSearchRequest;
 import com.noirix.domain.User;
+import com.noirix.repository.hibernate.HibernateUserInterface;
 import com.noirix.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,19 @@ import java.util.Map;
 public class UserRestController {
 
     private final UserService userService;
+
+    private final HibernateUserInterface userRepository;
+
+
+    @GetMapping
+    @RequestMapping("/hibernate")
+    //@ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> findAllHibernateUsers() {
+
+        return new ResponseEntity<>(Collections.singletonMap("result", userRepository.findAll()), HttpStatus.OK);
+
+        //return Collections.singletonMap("result", userService.findAll());
+    }
 
     @GetMapping
     @Secured("ROLE_ADMIN")
