@@ -1,4 +1,4 @@
-drop function get_users_stats_average_weight(boolean);
+drop function if exists get_users_stats_average_weight(boolean);
 
 create function get_users_stats_average_weight(is_deleted_param boolean) returns double precision
     language sql
