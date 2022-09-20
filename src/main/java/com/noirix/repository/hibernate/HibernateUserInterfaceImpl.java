@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,7 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HibernateUserInterfaceImpl implements HibernateUserInterface {
 
-    private final SessionFactory sessionFactory;
+    //private final SessionFactory sessionFactory;
+
+    private final EntityManagerFactory entityManagerFactory;
 
     @Override
     public HibernateUser findById(Long id) {
@@ -31,10 +35,13 @@ public class HibernateUserInterfaceImpl implements HibernateUserInterface {
 
     @Override
     public List<HibernateUser> findAll() {
-        try (Session session = sessionFactory.openSession()) {
+//        try (Session session = sessionFactory.openSession()) {
+//
+//            return session.createQuery("select hb from HibernateUser hb", HibernateUser.class).getResultList();
+//        }
 
-            return session.createQuery("select hb from HibernateUser hb", HibernateUser.class).getResultList();
-        }
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager.createQuery("select hb from HibernateUser hb", HibernateUser.class).getResultList();
     }
 
     @Override
