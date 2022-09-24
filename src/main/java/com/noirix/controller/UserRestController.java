@@ -1,5 +1,6 @@
 package com.noirix.controller;
 
+import com.noirix.controller.requests.SearchCriteria;
 import com.noirix.controller.requests.UserCreateRequest;
 import com.noirix.controller.requests.UserSearchRequest;
 import com.noirix.domain.User;
@@ -41,6 +42,16 @@ public class UserRestController {
     public ResponseEntity<Object> findAllHibernateUsers() {
 
         return new ResponseEntity<>(Collections.singletonMap("result", userRepository.getUserStats()), HttpStatus.OK);
+
+        //return Collections.singletonMap("result", userService.findAll());
+    }
+
+    @GetMapping
+    @RequestMapping("/hibernate/criteria")
+    //@ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> findAllHibernateUsers(@ModelAttribute SearchCriteria criteria) {
+
+        return new ResponseEntity<>(Collections.singletonMap("result", userRepository.criteriaAPITest(criteria)), HttpStatus.OK);
 
         //return Collections.singletonMap("result", userService.findAll());
     }
