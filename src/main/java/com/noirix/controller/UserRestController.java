@@ -40,7 +40,7 @@ public class UserRestController {
     //@ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> findAllHibernateUsers() {
 
-        return new ResponseEntity<>(Collections.singletonMap("result", userRepository.findAll()), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", userRepository.getUserStats()), HttpStatus.OK);
 
         //return Collections.singletonMap("result", userService.findAll());
     }

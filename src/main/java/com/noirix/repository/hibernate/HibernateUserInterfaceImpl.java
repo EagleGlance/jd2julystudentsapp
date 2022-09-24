@@ -19,9 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HibernateUserInterfaceImpl implements HibernateUserInterface {
 
-    //private final SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    private final EntityManagerFactory entityManagerFactory;
+    //private final EntityManagerFactory entityManagerFactory;
 
     @Override
     public HibernateUser findById(Long id) {
@@ -35,13 +35,26 @@ public class HibernateUserInterfaceImpl implements HibernateUserInterface {
 
     @Override
     public List<HibernateUser> findAll() {
-//        try (Session session = sessionFactory.openSession()) {
-//
-//            return session.createQuery("select hb from HibernateUser hb", HibernateUser.class).getResultList();
-//        }
+//        final String query = "select max(hb.weight) from HibernateUser hb " +
+//                "inner join HibernateShopOrder so on so.id = hb.id " +
+//                "left join HibernateMedicalInfo mi on mi.id = hb.id " +
+//                " where so.sum > 10 and so.sum < 800 ";
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.createQuery("select hb from HibernateUser hb", HibernateUser.class).getResultList();
+        final String query = "select hb from HibernateUser hb " +
+                " inner join HibernateMedicalInfo mi on mi.id = hb.id  " +
+                " where hb.weight > (select avg(h.id) from HibernateUser h) and " +
+                " mi.bloodType = 2 " +
+                " " ;
+
+        //final String query = "select * from carshop.users";
+
+        try (Session session = sessionFactory.openSession()) {
+            //return session.createNativeQuery(query, HibernateUser.class).getResultList(); - native query run possibility
+            return session.createQuery(query, HibernateUser.class).getResultList();
+        }
+
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        return entityManager.createQuery(query, HibernateUser.class).getResultList();
     }
 
     @Override
@@ -65,8 +78,14 @@ public class HibernateUserInterfaceImpl implements HibernateUserInterface {
     }
 
     @Override
-    public Map<String, Object> getUserStats() {
-        return null;
+    public Object getUserStats() {
+
+       final String query = "select carshop.get_users_stats_average_weight(false)";
+
+        try (Session session = sessionFactory.openSession()) {
+            //return session.createNativeQuery(query, HibernateUser.class).getResultList(); - native query run possibility
+            return session.createNativeQuery(query).getSingleResult();
+        }
     }
 
     @Override

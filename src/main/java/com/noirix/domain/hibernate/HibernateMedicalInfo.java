@@ -22,7 +22,7 @@ public class HibernateMedicalInfo {
     private Long id;
 
     @Column(name = "blood_type")
-    private String bloodType;
+    private Integer bloodType;
 
     @Column(name = "rh")
     private String rh;
