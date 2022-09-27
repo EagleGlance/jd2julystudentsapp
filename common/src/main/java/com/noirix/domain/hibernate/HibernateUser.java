@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.noirix.domain.Gender;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +27,10 @@ import java.util.Set;
 @Data
 @Entity
 @EqualsAndHashCode(exclude = {
-        "roles", "orders"
+        "roles", "orders", "info"
+})
+@ToString(exclude = {
+        "roles", "orders", "info"
 })
 @Table(name = "users")
 public class HibernateUser {
