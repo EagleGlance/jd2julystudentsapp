@@ -18,6 +18,12 @@ spring:
     username: postgres
     password: root
     url: "jdbc:postgresql://localhost:5432/jd2"
+#
+#  cache:
+#    type: Caffeine
+#    cache-names: roles
+#    caffeine:
+#      spec: initialCapacity=10,maximumSize=20, expireAfterAccess=10s
 
 server:
   port: 8080
