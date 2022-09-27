@@ -2,11 +2,10 @@ package com.noirix.controller.springdata;
 
 import com.noirix.controller.requests.UserCreateRequest;
 import com.noirix.domain.Gender;
-import com.noirix.domain.User;
+import com.noirix.domain.hibernate.Credentials;
 import com.noirix.domain.hibernate.HibernateUser;
 import com.noirix.repository.jdbctemplate.RoleRepositoryInterface;
 import com.noirix.repository.springdata.UserSpringDataRepository;
-import com.noirix.util.UUIDGenerator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.PageRequest;
@@ -63,8 +62,12 @@ public class UserController {
         user.setIsDeleted(false);
         user.setWeight(createRequest.getWeight());
 
-        user.setUserLogin(RandomStringUtils.randomAlphabetic(10));
-        user.setUserPassword(RandomStringUtils.randomAlphabetic(10));
+        Credentials credentials = new Credentials(
+                RandomStringUtils.randomAlphabetic(10),
+                RandomStringUtils.randomAlphabetic(10)
+        );
+
+        user.setCredentials(credentials);
 
         HibernateUser createdUser = repository.save(user);
 

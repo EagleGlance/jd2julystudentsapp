@@ -16,11 +16,11 @@ public interface UserSpringDataRepository extends CrudRepository<HibernateUser, 
 
     HibernateUser findByIdAndGender(Long id, Gender gender);
 
-    List<HibernateUser> findByUserLogin(String login);
+    List<HibernateUser> findByCredentialsLogin(String login);
 
-    List<HibernateUser> findByUserLoginAndUserNameAndBirth(String login, String name, Timestamp birthDate);
+    List<HibernateUser> findByCredentialsLoginAndUserNameAndBirth(String login, String name, Timestamp birthDate);
 
-    List<HibernateUser> findByUserLoginAndUserNameOrBirthOrderByIdDescUserNameDesc(String login, String name, Timestamp birthDate);
+    List<HibernateUser> findByCredentialsLoginAndUserNameOrBirthOrderByIdDescUserNameDesc(String login, String name, Timestamp birthDate);
 
     //select * from m_users where (login = ? and name = ?) or birth_date = ?
 
@@ -30,7 +30,7 @@ public interface UserSpringDataRepository extends CrudRepository<HibernateUser, 
     @Query(value = "select * from carshop.users", nativeQuery = true)
     List<HibernateUser> findByHQLQueryNative();
 
-    @Query(value = "select u from HibernateUser u where u.userLogin = :login and u.userName = :userName")
+    @Query(value = "select u from HibernateUser u where u.credentials.login = :login and u.userName = :userName")
     List<HibernateUser> findByHQLQuery(String login, @Param("userName") String name);
 
     @Query("select u.id, u.userName from HibernateUser u")

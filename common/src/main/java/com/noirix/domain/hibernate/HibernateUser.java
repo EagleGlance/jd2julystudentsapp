@@ -8,8 +8,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -63,12 +66,19 @@ public class HibernateUser {
     @Column
     private Double weight;
 
-    @Column(name = "user_login")
-    private String userLogin;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "login", column = @Column(name = "user_login")),
+            @AttributeOverride(name = "password", column = @Column(name = "user_password"))
+    })
+    private Credentials credentials;
 
-    @Column(name = "user_password")
-    @JsonIgnore
-    private String userPassword;
+//    @Column(name = "user_login")
+//    private String userLogin;
+//
+//    @Column(name = "user_password")
+//    @JsonIgnore
+//    private String userPassword;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
