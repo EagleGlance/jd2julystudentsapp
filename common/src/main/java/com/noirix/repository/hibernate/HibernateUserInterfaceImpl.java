@@ -3,33 +3,31 @@ package com.noirix.repository.hibernate;
 import com.noirix.domain.SearchCriteria;
 import com.noirix.domain.User;
 import com.noirix.domain.hibernate.HibernateUser;
-import com.noirix.domain.hibernate.HibernateUser_;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @Primary
-@RequiredArgsConstructor
 public class HibernateUserInterfaceImpl implements HibernateUserInterface {
 
-    //private final SessionFactory sessionFactory;
+    @Autowired
+    @Qualifier("sessionFactory")
+    private SessionFactory sessionFactory;
 
-    private final EntityManagerFactory entityManagerFactory;
+    @Autowired
+    @Qualifier("entityManagerFactory")
+    private EntityManagerFactory entityManagerFactory;
 
     @Override
     public HibernateUser findById(Long id) {
@@ -52,7 +50,7 @@ public class HibernateUserInterfaceImpl implements HibernateUserInterface {
                 " inner join HibernateMedicalInfo mi on mi.id = hb.id  " +
                 " where hb.weight > (select avg(h.id) from HibernateUser h) and " +
                 " mi.bloodType = 2 " +
-                " " ;
+                " ";
 
         //final String query = "select * from carshop.users";
 
@@ -66,26 +64,32 @@ public class HibernateUserInterfaceImpl implements HibernateUserInterface {
     }
 
     @Override
+    @Transactional
     public List<HibernateUser> findAll(int limit, int offset) {
 
-        /*Cache level 1*/
+        /*Cache level 2*/
         final String query = "select u from HibernateUser u";
 
-        System.out.println("First entity manages queries");
+        List<HibernateUser> users;
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Session session = sessionFactory.openSession();
+        Session session2 = sessionFactory.openSession();
 
-        List<HibernateUser> users = entityManager.createQuery(query, HibernateUser.class).getResultList();
+        System.out.println("First session queries");
 
-        users = entityManager.createQuery(query, HibernateUser.class).getResultList();
+        Transaction transaction = session.beginTransaction();
+        users = session.createQuery(query, HibernateUser.class).getResultList();
+        users = session.createQuery(query, HibernateUser.class).getResultList();
+        transaction.commit();
+        session.close();
 
-        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        System.out.println("Second session queries");
 
-        System.out.println("Second entity manages queries");
-
-        users = entityManager2.createQuery(query, HibernateUser.class).getResultList();
-
-        users = entityManager2.createQuery(query, HibernateUser.class).getResultList();
+        Transaction transaction1 = session2.beginTransaction();
+        users = session2.createQuery(query, HibernateUser.class).getResultList();
+        users = session2.createQuery(query, HibernateUser.class).getResultList();
+        transaction1.commit();
+        session2.close();
 
         return users;
     }

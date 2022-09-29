@@ -33,7 +33,7 @@ spring:
       hibernate.connection.characterEncoding: utf8mb4
       hibernate.connection.CharSet: utf8mb4
       hibernate.connection.useUnicode: true
-      hibernate.javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
+      hibernate.javax.cache.provider: net.sf.ehcache.hibernate.EhCacheProvider
       hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
       hibernate.cache.use_second_level_cache: true
       hibernate:

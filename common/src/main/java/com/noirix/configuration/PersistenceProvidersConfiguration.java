@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,27 +17,28 @@ import java.util.Properties;
 @Configuration
 public class PersistenceProvidersConfiguration {
 
-//    @Bean(name = "sessionFactory")
-//    public SessionFactory getSessionFactory(DataSource dataSource) throws Exception {
-//        // Fix Postgres JPA Error:
-//        // Method org.postgresql.jdbc.PgConnection.createClob() is not yet implemented.
-//        // properties.put("hibernate.temp.use_jdbc_metadata_defaults",false);
-//
-//        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
-//
-//        // Package contain entity classes
-//        factoryBean.setPackagesToScan("com.noirix");
-//        factoryBean.setDataSource(dataSource);
-//        factoryBean.setHibernateProperties(getAdditionalProperties());
-//        factoryBean.afterPropertiesSet();
-//        //
-//        SessionFactory sf = factoryBean.getObject();
-//        System.out.println("## getSessionFactory: " + sf);
-//        return sf;
-//    }
+    @Bean(name = "sessionFactory")
+    public SessionFactory getSessionFactory(DataSource dataSource) throws Exception {
+        // Fix Postgres JPA Error:
+        // Method org.postgresql.jdbc.PgConnection.createClob() is not yet implemented.
+        // properties.put("hibernate.temp.use_jdbc_metadata_defaults",false);
+
+        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+
+        // Package contain entity classes
+        factoryBean.setPackagesToScan("com.noirix");
+        factoryBean.setDataSource(dataSource);
+        factoryBean.setHibernateProperties(getAdditionalProperties());
+        factoryBean.afterPropertiesSet();
+        //
+        SessionFactory sf = factoryBean.getObject();
+        System.out.println("## getSessionFactory: " + sf);
+        return sf;
+    }
 
     //Entity Manager
     @Autowired
+    @Primary
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em
@@ -64,7 +66,7 @@ public class PersistenceProvidersConfiguration {
         properties.put("hibernate.connection.CharSet", "utf8mb4");
         properties.put("hibernate.connection.useUnicode", "true");
 
-        /*Second level cache turn-on*/
+        //Second level cache turn-on
         properties.put("hibernate.cache.use_second_level_cache", "true");
         properties.put("hibernate.javax.cache.provider", "net.sf.ehcache.hibernate.EhCacheProvider");
         properties.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
