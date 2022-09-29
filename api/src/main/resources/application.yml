@@ -18,12 +18,27 @@ spring:
     username: postgres
     password: root
     url: "jdbc:postgresql://localhost:5432/jd2"
-#
-#  cache:
-#    type: Caffeine
-#    cache-names: roles
-#    caffeine:
-#      spec: initialCapacity=10,maximumSize=20, expireAfterAccess=10s
+  #
+  #  cache:
+  #    type: Caffeine
+  #    cache-names: roles
+  #    caffeine:
+  #      spec: initialCapacity=10,maximumSize=20, expireAfterAccess=10s
+
+  jpa:
+    properties:
+      javax.persistence.validation.mode: none
+      hibernate.dialect: org.hibernate.dialect.PostgreSQL10Dialect
+      hibernate.show_sql: true
+      hibernate.connection.characterEncoding: utf8mb4
+      hibernate.connection.CharSet: utf8mb4
+      hibernate.connection.useUnicode: true
+      hibernate.javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
+      hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+      hibernate.cache.use_second_level_cache: true
+      hibernate:
+        cache:
+          use_query_cache: true
 
 server:
   port: 8080

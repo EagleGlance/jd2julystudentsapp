@@ -2,7 +2,10 @@ package com.noirix.domain.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +19,8 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name = "medical_info")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class HibernateMedicalInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,9 +7,12 @@ import com.noirix.domain.Gender;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -36,6 +39,8 @@ import java.util.Set;
         "roles", "orders", "info"
 })
 @Table(name = "users")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 public class HibernateUser {
 
     @Id
@@ -86,14 +91,17 @@ public class HibernateUser {
     @Enumerated(EnumType.STRING)
     private Gender gender = Gender.NOT_SELECTED;
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("users")
     private Set<HibernateRole> roles;
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<HibernateShopOrder> orders;
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private HibernateMedicalInfo info;

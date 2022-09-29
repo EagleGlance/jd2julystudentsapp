@@ -3,6 +3,8 @@ package com.noirix.domain.hibernate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.noirix.domain.SystemRoles;
 import lombok.Data;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.Column;
@@ -23,6 +25,8 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 @Cacheable("roles")
+@javax.persistence.Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class HibernateRole {
 
     @Id

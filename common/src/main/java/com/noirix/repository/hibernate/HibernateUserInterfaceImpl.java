@@ -71,11 +71,21 @@ public class HibernateUserInterfaceImpl implements HibernateUserInterface {
         /*Cache level 1*/
         final String query = "select u from HibernateUser u";
 
+        System.out.println("First entity manages queries");
+
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         List<HibernateUser> users = entityManager.createQuery(query, HibernateUser.class).getResultList();
 
         users = entityManager.createQuery(query, HibernateUser.class).getResultList();
+
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+
+        System.out.println("Second entity manages queries");
+
+        users = entityManager2.createQuery(query, HibernateUser.class).getResultList();
+
+        users = entityManager2.createQuery(query, HibernateUser.class).getResultList();
 
         return users;
     }
