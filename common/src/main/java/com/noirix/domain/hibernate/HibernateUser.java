@@ -51,6 +51,7 @@ public class HibernateUser {
     @Column
     private Timestamp birth;
 
+    /*null, true, false*/
     @Column(name = "is_deleted")
     @JsonIgnore
     private Boolean isDeleted;
@@ -63,6 +64,7 @@ public class HibernateUser {
     @JsonIgnore
     private Timestamp modificationDate;
 
+    /*0, null*/
     @Column
     private Double weight;
 

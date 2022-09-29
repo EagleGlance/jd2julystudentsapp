@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
@@ -37,12 +38,11 @@ public class UserRestController {
 
     @GetMapping
     @RequestMapping("/hibernate")
-    //@ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> findAllHibernateUsers() {
 
-        return new ResponseEntity<>(Collections.singletonMap("result", userRepository.getUserStats()), HttpStatus.OK);
+        //return new ResponseEntity<>(Collections.singletonMap("result", userRepository.getUserStats()), HttpStatus.OK);
 
-        //return Collections.singletonMap("result", userService.findAll());
+        return new ResponseEntity<>(Collections.singletonMap("result", userRepository.findAll(1, 1)), HttpStatus.OK);
     }
 
     @GetMapping

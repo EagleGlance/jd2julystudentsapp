@@ -38,7 +38,8 @@ public class UserController {
     public ResponseEntity<Object> testEndpoint() {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
+                //repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
+                repository.findByIsDeletedOrderByIdDesc(false)), HttpStatus.OK);
     }
 
     @GetMapping("/test")
