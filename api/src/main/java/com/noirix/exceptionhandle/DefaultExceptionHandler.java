@@ -1,4 +1,4 @@
-package com.noirix.controller.exceptionhandle;
+package com.noirix.exceptionhandle;
 
 import com.noirix.exception.NoSuchEntityException;
 import com.noirix.util.UUIDGenerator;

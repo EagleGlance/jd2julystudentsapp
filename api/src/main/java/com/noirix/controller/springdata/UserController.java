@@ -2,13 +2,11 @@ package com.noirix.controller.springdata;
 
 import com.noirix.controller.requests.UserCreateRequest;
 import com.noirix.domain.Gender;
-import com.noirix.domain.hibernate.Credentials;
 import com.noirix.domain.hibernate.HibernateUser;
 import com.noirix.repository.jdbctemplate.RoleRepositoryInterface;
 import com.noirix.repository.springdata.UserSpringDataRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +29,8 @@ public class UserController {
     private final UserSpringDataRepository repository;
 
     private final RoleRepositoryInterface roleRepository;
+
+    private final ConversionService converter;
 
     @GetMapping
     public ResponseEntity<Object> testEndpoint() {
@@ -54,28 +52,13 @@ public class UserController {
     @Transactional
     public ResponseEntity<Object> createUser(@RequestBody UserCreateRequest createRequest) {
 
-        HibernateUser user = new HibernateUser();
-        user.setUserName(createRequest.getUserName());
-        user.setSurname(createRequest.getSurname());
-        user.setBirth(new Timestamp(new Date().getTime()));
-        user.setCreationDate(new Timestamp(new Date().getTime()));
-        user.setModificationDate(new Timestamp(new Date().getTime()));
-        user.setIsDeleted(false);
-        user.setWeight(createRequest.getWeight());
-
-        Credentials credentials = new Credentials(
-                RandomStringUtils.randomAlphabetic(10),
-                RandomStringUtils.randomAlphabetic(10)
-        );
-
-        user.setCredentials(credentials);
-
+        HibernateUser user = converter.convert(createRequest, HibernateUser.class);
         HibernateUser createdUser = repository.save(user);
 
         repository.createRoleRow(createdUser.getId(), roleRepository.findById(1L).getId());
 
         Map<String, Object> model = new HashMap<>();
-        model.put("user", createdUser);
+        model.put("user", repository.findById(createdUser.getId()).get());
 
         return new ResponseEntity<>(model, HttpStatus.CREATED);
     }

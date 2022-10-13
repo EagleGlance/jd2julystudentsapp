@@ -1,4 +1,4 @@
-package com.noirix.controller.exceptionhandle;
+package com.noirix.exceptionhandle;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
