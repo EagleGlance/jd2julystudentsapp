@@ -1,6 +1,7 @@
 package com.noirix.service;
 
 import com.noirix.domain.User;
+import com.noirix.repository.hibernate.HibernateUserInterface;
 import com.noirix.repository.user.UserRepositoryInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class UserServiceImpl implements UserService {
 //    @Named("userRepository")
 //JSR-330
     private final UserRepositoryInterface userRepository;
+
+    private final HibernateUserInterface hibernateUserInterface;
 
 //    public UserServiceImpl(@Qualifier("userRepository") UserRepositoryInterface userRepository) {
 //        this.userRepository = userRepository;

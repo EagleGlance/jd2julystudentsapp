@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -40,6 +41,7 @@ import java.util.Set;
 })
 @Table(name = "users")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@NamedQuery(name = "m_users_multiple_ids_search", query = "select u from HibernateUser u where u.id = :userIds")
 @Cacheable
 public class HibernateUser {
 

@@ -35,6 +35,8 @@ public class UserRestController {
 
     private final HibernateUserInterface userRepository;
 
+    private final HibernateUserInterface hibernateUserInterface;
+
 
     @GetMapping
     @RequestMapping("/hibernate")
@@ -42,7 +44,8 @@ public class UserRestController {
 
         //return new ResponseEntity<>(Collections.singletonMap("result", userRepository.getUserStats()), HttpStatus.OK);
 
-        return new ResponseEntity<>(Collections.singletonMap("result", userRepository.findAll(1, 1)), HttpStatus.OK);
+        //return new ResponseEntity<>(Collections.singletonMap("result", userRepository.findAll(1, 1)), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", hibernateUserInterface.findAll()), HttpStatus.OK);
     }
 
     @GetMapping

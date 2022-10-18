@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,26 +44,32 @@ public class HibernateUserInterfaceImpl implements HibernateUserInterface {
 
     @Override
     public List<HibernateUser> findAll() {
-//        final String query = "select max(hb.weight) from HibernateUser hb " +
-//                "inner join HibernateShopOrder so on so.id = hb.id " +
-//                "left join HibernateMedicalInfo mi on mi.id = hb.id " +
-//                " where so.sum > 10 and so.sum < 800 ";
-
-        final String query = "select hb from HibernateUser hb " +
-                " inner join HibernateMedicalInfo mi on mi.id = hb.id  " +
-                " where hb.weight > (select avg(h.id) from HibernateUser h) and " +
-                " mi.bloodType = 2 " +
-                " ";
-
-        //final String query = "select * from carshop.users";
-
-//        try (Session session = sessionFactory.openSession()) {
-//            //return session.createNativeQuery(query, HibernateUser.class).getResultList(); - native query run possibility
-//            return session.createQuery(query, HibernateUser.class).getResultList();
-//        }
-
+////        final String query = "select max(hb.weight) from HibernateUser hb " +
+////                "inner join HibernateShopOrder so on so.id = hb.id " +
+////                "left join HibernateMedicalInfo mi on mi.id = hb.id " +
+////                " where so.sum > 10 and so.sum < 800 ";
+//
+//        final String query = "select hb from HibernateUser hb " +
+//                " inner join HibernateMedicalInfo mi on mi.id = hb.id  " +
+//                " where hb.weight > (select avg(h.id) from HibernateUser h) and " +
+//                " mi.bloodType = 2 " +
+//                " ";
+//
+//        //final String query = "select * from carshop.users";
+//
+////        try (Session session = sessionFactory.openSession()) {
+////            //return session.createNativeQuery(query, HibernateUser.class).getResultList(); - native query run possibility
+////            return session.createQuery(query, HibernateUser.class).getResultList();
+////        }
+//
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//        return entityManager.createQuery(query, HibernateUser.class).getResultList();
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.createQuery(query, HibernateUser.class).getResultList();
+
+        TypedQuery<HibernateUser> query = entityManager.createNamedQuery("m_users_multiple_ids_search", HibernateUser.class);
+        query.setParameter("userIds", 4L);
+
+        return query.getResultList();
     }
 
     @Override
