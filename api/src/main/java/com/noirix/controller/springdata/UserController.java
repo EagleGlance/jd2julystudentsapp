@@ -1,5 +1,6 @@
 package com.noirix.controller.springdata;
 
+import com.noirix.controller.requests.RoleRequest;
 import com.noirix.controller.requests.UserCreateRequest;
 import com.noirix.domain.Gender;
 import com.noirix.domain.hibernate.HibernateRole;
@@ -58,6 +59,11 @@ public class UserController {
     @PostMapping
     @Transactional
     public ResponseEntity<Object> createUser(@RequestBody UserCreateRequest createRequest) {
+
+        RoleRequest roleRequest = new RoleRequest();
+
+        HibernateRole convertTest = converter.convert(roleRequest, HibernateRole.class);
+
 
         HibernateUser user = converter.convert(createRequest, HibernateUser.class);
         HibernateUser createdUser = repository.save(setRoles(user));
