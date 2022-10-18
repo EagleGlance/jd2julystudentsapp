@@ -15,17 +15,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,17 +67,26 @@ public class UserController {
     @ApiOperation(value = "Finding all users with Page Info response")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-Auth-Token", defaultValue = "token", required = true, paramType = "header", dataType = "string"),
-            @ApiImplicitParam(name = "query", defaultValue = "query", required = false, paramType = "query", dataType = "string")
+            @ApiImplicitParam(name = "query", defaultValue = "query", required = false, paramType = "query", dataType = "string"),
+
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                    value = "Results page you want to retrieve (0..N)"),
+            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                    value = "Number of records per page."),
+            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                    value = "Sorting criteria in the format: property(,asc|desc). " +
+                            "Default sort order is ascending. " +
+                            "Multiple sort criteria are supported.")
     })
     @GetMapping("/swagger-test")
-    public ResponseEntity<Page<HibernateUser>> findAll() {
-        return new ResponseEntity<>(repository.findAll(PageRequest.of(0, 10)), HttpStatus.OK);
+    public ResponseEntity<Page<HibernateUser>> findAll(@ApiIgnore Pageable pageable) {
+        return new ResponseEntity<>(repository.findAll(pageable), HttpStatus.OK);
     }
 
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Object> createUser(@RequestBody UserCreateRequest createRequest) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserCreateRequest createRequest) {
 
         RoleRequest roleRequest = new RoleRequest();
 
