@@ -7,9 +7,10 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
     url: ${spring.datasource.url}
-    default-schema: carshop
+#    default-schema: carshop
     out-of-order: true
     ignore-migration-patterns: '*:ignored'
+    schemas: carshop
   datasource:
     hikari:
       jdbc-url: "jdbc:postgresql://localhost:5432/jd2"

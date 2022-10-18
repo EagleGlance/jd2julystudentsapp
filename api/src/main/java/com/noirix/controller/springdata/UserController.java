@@ -8,8 +8,13 @@ import com.noirix.domain.hibernate.HibernateUser;
 import com.noirix.repository.jdbctemplate.RoleRepositoryInterface;
 import com.noirix.repository.springdata.RolesSpringDataRepository;
 import com.noirix.repository.springdata.UserSpringDataRepository;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +58,16 @@ public class UserController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 repository.findByIdAndGender(userId, Gender.valueOf(gender))), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Finding all users with Page Info response")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-Auth-Token", defaultValue = "token", required = true, paramType = "header", dataType = "string"),
+            @ApiImplicitParam(name = "query", defaultValue = "query", required = false, paramType = "query", dataType = "string")
+    })
+    @GetMapping("/swagger-test")
+    public ResponseEntity<Page<HibernateUser>> findAll() {
+        return new ResponseEntity<>(repository.findAll(PageRequest.of(0, 10)), HttpStatus.OK);
     }
 
 
