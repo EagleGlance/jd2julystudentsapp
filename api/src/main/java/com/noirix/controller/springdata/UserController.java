@@ -8,6 +8,7 @@ import com.noirix.domain.hibernate.HibernateUser;
 import com.noirix.repository.jdbctemplate.RoleRepositoryInterface;
 import com.noirix.repository.springdata.RolesSpringDataRepository;
 import com.noirix.repository.springdata.UserSpringDataRepository;
+import com.noirix.security.util.PrincipalUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -30,9 +31,11 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -67,20 +70,24 @@ public class UserController {
     @ApiOperation(value = "Finding all users with Page Info response")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-Auth-Token", defaultValue = "token", required = true, paramType = "header", dataType = "string"),
-            @ApiImplicitParam(name = "query", defaultValue = "query", required = false, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = "query", defaultValue = "query", required = false, paramType = "query", dataType = "string")
 
-            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
-                    value = "Results page you want to retrieve (0..N)"),
-            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
-                    value = "Number of records per page."),
-            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-                    value = "Sorting criteria in the format: property(,asc|desc). " +
-                            "Default sort order is ascending. " +
-                            "Multiple sort criteria are supported.")
+//            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+//                    value = "Results page you want to retrieve (0..N)"),
+//            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+//                    value = "Number of records per page."),
+//            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+//                    value = "Sorting criteria in the format: property(,asc|desc). " +
+//                            "Default sort order is ascending. " +
+//                            "Multiple sort criteria are supported.")
     })
     @GetMapping("/swagger-test")
-    public ResponseEntity<Page<HibernateUser>> findAll(@ApiIgnore Pageable pageable) {
-        return new ResponseEntity<>(repository.findAll(pageable), HttpStatus.OK);
+    public ResponseEntity<Page<HibernateUser>> findAll(@ApiIgnore Principal principal) {
+        String username = PrincipalUtil.getUsername(principal);
+        HibernateUser userByPrincipal = repository.findByCredentialsLogin(username);
+
+        System.out.println(userByPrincipal);
+        return new ResponseEntity<>(repository.findAll(PageRequest.of(0, 10)), HttpStatus.OK);
     }
 
 

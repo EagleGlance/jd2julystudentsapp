@@ -48,4 +48,4 @@ server:
 
 jwt:
   secret: qwepuisdhfaksdjflsdfn12321___**
-  expiration: 60000
+  expiration: 600000

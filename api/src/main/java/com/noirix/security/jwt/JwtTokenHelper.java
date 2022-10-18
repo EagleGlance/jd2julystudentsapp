@@ -23,6 +23,7 @@ import static java.util.Calendar.MILLISECOND;
 
 @Component
 @RequiredArgsConstructor
+//TODO: fix parsing broken token Caused by: com.fasterxml.jackson.core.JsonParseException: Unexpected character
 public class JwtTokenHelper {
 
     /*Generate JWT Token and fields in token. Also add signature into 3-d part of token*/

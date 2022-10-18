@@ -16,7 +16,7 @@ public interface UserSpringDataRepository extends CrudRepository<HibernateUser, 
 
     HibernateUser findByIdAndGender(Long id, Gender gender);
 
-    List<HibernateUser> findByCredentialsLogin(String login);
+    HibernateUser findByCredentialsLogin(String login);
 
     List<HibernateUser> findByCredentialsLoginAndUserNameAndBirth(String login, String name, Timestamp birthDate);
 
