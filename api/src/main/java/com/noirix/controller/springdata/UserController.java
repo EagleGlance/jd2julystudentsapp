@@ -19,6 +19,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -92,17 +94,15 @@ public class UserController {
 
 
     @PostMapping
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserCreateRequest createRequest) {
 
         RoleRequest roleRequest = new RoleRequest();
 
-        HibernateRole convertTest = converter.convert(roleRequest, HibernateRole.class);
-
-
         HibernateUser user = converter.convert(createRequest, HibernateUser.class);
         HibernateUser createdUser = repository.save(setRoles(user));
 
+        HibernateRole convertTest = converter.convert(roleRequest, HibernateRole.class);
         //repository.createRoleRow(createdUser.getId(), roleRepository.findById(1L).getId());
 
         Map<String, Object> model = new HashMap<>();
