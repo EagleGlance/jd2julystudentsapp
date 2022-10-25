@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: prod
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -14,7 +16,7 @@ spring:
   datasource:
     hikari:
       jdbc-url: "jdbc:postgresql://localhost:5432/jd2"
-      maximum-pool-size: 10
+      maximum-pool-size: 20
       driver-class-name: org.postgresql.Driver
     username: postgres
     password: root
@@ -40,12 +42,68 @@ spring:
       hibernate:
         cache:
           use_query_cache: true
-
 server:
   port: 8080
-
----
-
 jwt:
   secret: qwepuisdhfaksdjflsdfn12321___**
   expiration: 600000
+
+---
+
+spring:
+  profiles: jwt-top-secret
+jwt:
+  secret: 111*%--+devsecret777**
+
+---
+
+spring:
+  profiles:
+    active: dev
+    include: jwt-top-secret
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-description: Flyway Scripts
+    #    locations: classpath:/migration
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+    #    default-schema: carshop
+    out-of-order: true
+    ignore-migration-patterns: '*:ignored'
+    schemas: carshop
+  datasource:
+    hikari:
+      jdbc-url: "jdbc:postgresql://localhost:5432/jd2"
+      maximum-pool-size: 5
+      driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    url: "jdbc:postgresql://localhost:5432/jd2"
+  #
+  #  cache:
+  #    type: Caffeine
+  #    cache-names: roles
+  #    caffeine:
+  #      spec: initialCapacity=10,maximumSize=20, expireAfterAccess=10s
+
+  jpa:
+    properties:
+      javax.persistence.validation.mode: none
+      hibernate.dialect: org.hibernate.dialect.PostgreSQL10Dialect
+      hibernate.show_sql: true
+      hibernate.connection.characterEncoding: utf8mb4
+      hibernate.connection.CharSet: utf8mb4
+      hibernate.connection.useUnicode: true
+      hibernate.javax.cache.provider: net.sf.ehcache.hibernate.EhCacheProvider
+      hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+      hibernate.cache.use_second_level_cache: true
+      hibernate:
+        cache:
+          use_query_cache: true
+server:
+  port: 8081
+jwt:
+  secret: devsecret777**
+  expiration: 100000
